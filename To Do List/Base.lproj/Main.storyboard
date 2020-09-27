@@ -27,6 +27,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="4O4-I5-fDK" kind="show" identifier="ShowDetail" id="ZBA-OW-jcr"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -40,7 +43,13 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="RoD-Zv-niP" secondAttribute="trailing" id="tBt-Tp-ED9"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="SxM-Ty-dKj"/>
+                    <navigationItem key="navigationItem" id="SxM-Ty-dKj">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="HCo-Jd-fgN">
+                            <connections>
+                                <segue destination="b3f-vy-ZFo" kind="presentation" identifier="AddDetail" id="kcQ-dn-oNr"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="RoD-Zv-niP" id="l3h-UY-UuS"/>
                     </connections>
@@ -49,10 +58,10 @@
             </objects>
             <point key="canvasLocation" x="973.60000000000002" y="93.103448275862078"/>
         </scene>
-        <!--Table View Controller-->
+        <!--To Do Detail Table View Controller-->
         <scene sceneID="bnV-3x-nlW">
             <objects>
-                <tableViewController id="4O4-I5-fDK" sceneMemberID="viewController">
+                <tableViewController id="4O4-I5-fDK" customClass="ToDoDetailTableViewController" customModule="To_Do_List" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="MJW-Fk-Lqv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -68,7 +77,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sKK-yc-X3a">
-                                                    <rect key="frame" x="16" y="5" width="343" height="34"/>
+                                                    <rect key="frame" x="15" y="5" width="343" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -87,7 +96,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Bvg-P1-6EB">
+                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="Bvg-P1-6EB">
                                                     <rect key="frame" x="0.0" y="11" width="375" height="178"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 </datePicker>
@@ -125,10 +134,24 @@
                             <outlet property="delegate" destination="4O4-I5-fDK" id="0Ke-XC-6Ie"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="BDN-rW-wOq">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="QH0-4D-Hkc">
+                            <connections>
+                                <action selector="cancelButtonPressed:" destination="4O4-I5-fDK" id="E97-og-evw"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="gzX-Fw-BZg"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="datePicker" destination="Bvg-P1-6EB" id="ORm-25-1ZK"/>
+                        <outlet property="nameField" destination="sKK-yc-X3a" id="QQP-A2-EMs"/>
+                        <outlet property="noteView" destination="BOp-wq-NJN" id="LEw-Wm-wc5"/>
+                        <outlet property="saveBarButton" destination="gzX-Fw-BZg" id="r6r-8K-cPS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jfE-7N-vGg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1679.2" y="104.7976011994003"/>
+            <point key="canvasLocation" x="3457" y="72"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZDR-Re-Qg9">
@@ -148,7 +171,29 @@
             </objects>
             <point key="canvasLocation" x="34.399999999999999" y="93.103448275862078"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="PmC-gE-nx5">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="b3f-vy-ZFo" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="zqY-Fb-4OV"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iYO-Qk-m6F">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="4O4-I5-fDK" kind="relationship" relationship="rootViewController" id="KFA-Tf-ms1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Reb-yA-HvT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2222" y="-343"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="ZBA-OW-jcr"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
