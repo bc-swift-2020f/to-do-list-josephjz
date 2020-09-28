@@ -14,7 +14,10 @@ class ToDoListViewController: UIViewController {
     @IBOutlet weak var addBarButton: UIBarButtonItem!
     
     // class wide arary variable to hold the To Do items for the app
-    var toDoArray = ["Learn Swift", "Build Apps", "Change the World", "Take a Vacation"]
+    //var toDoArray = ["Learn Swift", "Build Apps", "Change the World", "Take a Vacation"]
+    
+    // using stuct instead of array
+    var toDoItems: [ToDoItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +26,42 @@ class ToDoListViewController: UIViewController {
         tableView.dataSource = self
         // also will be delegate code for storyboard
         tableView.delegate = self
+        
+        loadData()
     }
     
+    
+    func loadData() {
+        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+        // read in data at this document url inside of let guard statement
+        guard let data = try? Data(contentsOf: documentURL) else {return}
+        let jsonDecoder = JSONDecoder()
+        do  {
+            toDoItems = try jsonDecoder.decode(Array<ToDoItem>.self, from: data)
+            tableView.reloadData()
+        } catch {
+            print("😡Error: Could not load data \(error.localizedDescription)")
+        }
+    }
+    
+    
+    
+    
+    //go through file manager for saving directory location
+    func saveData() {
+        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+        let jsonEncoder = JSONEncoder()
+        let data = try? jsonEncoder.encode(toDoItems)
+        do {
+            try data?.write(to: documentURL, options: .noFileProtection)
+        } catch {
+            print("😡Error: Could not save data \(error.localizedDescription)")
+        }
+    }
+    
+     
     
     // function passes in UIStoryboardSegue, triggered automatically just before segue happens in this viewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -35,7 +72,8 @@ class ToDoListViewController: UIViewController {
             // destination is the ToDoDetailTableViewController which has "ShowDetail" which we are referencing
             let destination = segue.destination as! ToDoDetailTableViewController
             let selectedIndexPath = tableView.indexPathForSelectedRow!
-            destination.toDoItem = toDoArray[selectedIndexPath.row]
+            //destination.toDoItem = toDoArray[selectedIndexPath.row]
+            destination.toDoItem = toDoItems[selectedIndexPath.row]
         } else {
             // we only have 2 segues, so the other is "AddDetail"
             // selectedIndexPath is telling us if we have existing selection, and then deselect if we do
@@ -54,18 +92,24 @@ class ToDoListViewController: UIViewController {
         // if there is a non nil value in selectedIndexPath, then curlies will execute (aka checking if the user has clicked on a cell, and remembering what that click was so we can return there with our unwind
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             // updating data
-            toDoArray[selectedIndexPath.row] = source.toDoItem
+            //toDoArray[selectedIndexPath.row] = source.toDoItem
+            toDoItems[selectedIndexPath.row] = source.toDoItem
             tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
         } else {
             // will execute if selected if selectedIndexPath was nil (happens when we click + because of else clause in prepare() executing and thus deselecting any selectedIndexPath index
             // create new index path: row is toDoArray.count because this will be at the index one past our last used index, giving us space to make new value
-            let newIndexPath = IndexPath(row: toDoArray.count, section: 0)
+            //let newIndexPath = IndexPath(row: toDoArray.count, section: 0)
+            let newIndexPath = IndexPath(row: toDoItems.count, section: 0)
             //appends new value we are getting from source
-            toDoArray.append(source.toDoItem)
+            //toDoArray.append(source.toDoItem)
+            toDoItems.append(source.toDoItem)
             tableView.insertRows(at: [newIndexPath], with: .bottom)
             //scrolls user down to row we just inserted
             tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
         }
+        
+        saveData()
+        
     }
     
     
@@ -93,14 +137,18 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
     // two functions in body of protocol listen in for messages from tableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("numberOfRowsInSection was just called, returning \(toDoArray.count)")
-        return toDoArray.count
+//        print("numberOfRowsInSection was just called, returning \(toDoArray.count)")
+//        return toDoArray.count
+        print("numberOfRowsInSection was just called, returning \(toDoItems.count)")
+        return toDoItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = toDoArray[indexPath.row]
-        print("cellForRowAt was just called, for indexPath = \(indexPath.row) which is the  cell containing \(toDoArray[indexPath.row])")
+        //cell.textLabel?.text = toDoArray[indexPath.row]
+        cell.textLabel?.text = toDoItems[indexPath.row].name
+        //print("cellForRowAt was just called, for indexPath = \(indexPath.row) which is the  cell containing \(toDoArray[indexPath.row])")
+        print("cellForRowAt was just called, for indexPath = \(indexPath.row) which is the  cell containing \(toDoItems[indexPath.row])")
         return cell
     }
     
@@ -110,9 +158,11 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // index value of element to remove is passed in as arg
-            toDoArray.remove(at: indexPath.row)
+            //toDoArray.remove(at: indexPath.row)
+            toDoItems.remove(at: indexPath.row)
             // now element is removed from array, and need to remove row from table view
             tableView.deleteRows(at: [indexPath], with: .fade)
+            saveData()
         }
     }
     
@@ -121,9 +171,13 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         // need to move data by deleting data from source index path.row, and insert the data at destination indexpath. row
         // need a copy of data since we delete it first
-        let itemToMove = toDoArray[sourceIndexPath.row]
-        toDoArray.remove(at: sourceIndexPath.row)
-        toDoArray.insert(itemToMove, at: destinationIndexPath.row)
+//        let itemToMove = toDoArray[sourceIndexPath.row]
+//        toDoArray.remove(at: sourceIndexPath.row)
+//        toDoArray.insert(itemToMove, at: destinationIndexPath.row)
+        let itemToMove = toDoItems[sourceIndexPath.row]
+        toDoItems.remove(at: sourceIndexPath.row)
+        toDoItems.insert(itemToMove, at: destinationIndexPath.row)
+        saveData()
     }
     
     
