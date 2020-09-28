@@ -9,16 +9,35 @@ import UIKit
 class ToDoDetailTableViewController: UITableViewController {
     
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
-    
     @IBOutlet weak var nameField: UITextField!
-    
     @IBOutlet weak var datePicker: UIDatePicker!
-    
     @IBOutlet weak var noteView: UITextView!
+    
+    // in the destination view controller, declare (but don't initialize) a variable to catch the data we are about to pass over from source; the destination is ToDoDetailTableViewController.swift
+    // String! so that it is an implicitly unwrapped optional
+    var toDoItem: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // check to see if we received a value
+        if toDoItem == nil {
+            toDoItem = ""
+        }
+        
+        // so that the User Interface shows updated data
+        nameField.text = toDoItem
     }
+    
+    
+    // update toDoItem with value inside of nameField.text
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        toDoItem = nameField.text
+    }
+    
+    
+    
+    
     
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         // able to reuse this whenever you need similar cancel button behavior
