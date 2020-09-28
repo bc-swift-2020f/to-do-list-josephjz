@@ -6,6 +6,16 @@
 
 import UIKit
 
+private let dateFormatter: DateFormatter = {
+    print("CREATED 📆 FORMATTER")
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .short
+    dateFormatter.timeStyle = .short
+    return dateFormatter
+}()
+
+
+
 class ToDoDetailTableViewController: UITableViewController {
     
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
@@ -31,7 +41,7 @@ class ToDoDetailTableViewController: UITableViewController {
         
         // check to see if we received a value
         if toDoItem == nil {
-            toDoItem = ToDoItem(name: "", date: Date(), notes: "", reminderSet: false)
+            toDoItem = ToDoItem(name: "", date: Date().addingTimeInterval(24*60*60), notes: "", reminderSet: false)
         }
         updateUserInterface()
     }
@@ -51,6 +61,7 @@ class ToDoDetailTableViewController: UITableViewController {
 //            dateLabel.textColor = .gray
 //        }
         dateLabel.textColor = (reminderSwitch.isOn ? .black : .gray)
+        dateLabel.text = dateFormatter.string(from: toDoItem.date)
         }
     
     
@@ -87,6 +98,12 @@ class ToDoDetailTableViewController: UITableViewController {
         tableView.beginUpdates()
         tableView.endUpdates()
     }
+    
+    
+    @IBAction func datePickerChanged(_ sender: UIDatePicker) {
+        dateLabel.text = dateFormatter.string(from: sender.date)
+    }
+    
 }
 
 
