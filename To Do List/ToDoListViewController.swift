@@ -270,8 +270,9 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource, Li
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ListTableViewCell
         // next line makes the viewController the delegate of the listTableViewCell
         cell.delegate = self
-        cell.nameLabel.text = toDoItems[indexPath.row].name
-        cell.checkBoxButton.isSelected = toDoItems[indexPath.row].completed
+        cell.toDoItem = toDoItems[indexPath.row]
+        //cell.nameLabel.text = toDoItems[indexPath.row].name
+        //cell.checkBoxButton.isSelected = toDoItems[indexPath.row].completed
         //cell.textLabel?.text = toDoItems[indexPath.row].name
         //print("cellForRowAt was just called, for indexPath = \(indexPath.row) which is the  cell containing \(toDoItems[indexPath.row])")
         return cell
