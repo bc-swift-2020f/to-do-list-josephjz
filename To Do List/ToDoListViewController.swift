@@ -241,7 +241,18 @@ class ToDoListViewController: UIViewController {
 
 
 // adopting protocols for tableView
-extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
+extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource, ListTableViewCellDelegate {
+    func checkBoxToggle(sender: ListTableViewCell) {
+        if let selectedIndexPath = tableView.indexPath(for: sender) {
+            // toggle the selection of button that holds check box; this will turn true to false, false to true
+            toDoItems[selectedIndexPath.row].completed = !toDoItems[selectedIndexPath.row].completed
+            //reloads the row we just changed to update interface
+            tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+        }
+        // DONT FORGET TO CALL SAVE DATA AFTER CHANGING DATA ASSOCIATED WITH BUTTON
+        saveData()
+    }
+    
     
     // two functions in body of protocol listen in for messages from tableView
     
@@ -253,11 +264,16 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        //cell.textLabel?.text = toDoArray[indexPath.row]
-        cell.textLabel?.text = toDoItems[indexPath.row].name
-        //print("cellForRowAt was just called, for indexPath = \(indexPath.row) which is the  cell containing \(toDoArray[indexPath.row])")
-        print("cellForRowAt was just called, for indexPath = \(indexPath.row) which is the  cell containing \(toDoItems[indexPath.row])")
+        
+        // cell is of type UITableViewCell -- this doesnt have IB outlets, subclass listtableviewcell has them
+        // we use as! so that the constant is taken as the subclass u assign
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ListTableViewCell
+        // next line makes the viewController the delegate of the listTableViewCell
+        cell.delegate = self
+        cell.nameLabel.text = toDoItems[indexPath.row].name
+        cell.checkBoxButton.isSelected = toDoItems[indexPath.row].completed
+        //cell.textLabel?.text = toDoItems[indexPath.row].name
+        //print("cellForRowAt was just called, for indexPath = \(indexPath.row) which is the  cell containing \(toDoItems[indexPath.row])")
         return cell
     }
     
