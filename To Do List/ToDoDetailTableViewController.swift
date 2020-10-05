@@ -5,6 +5,7 @@
 
 
 import UIKit
+import UserNotifications
 
 private let dateFormatter: DateFormatter = {
     print("CREATED 📆 FORMATTER")
@@ -39,6 +40,10 @@ class ToDoDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // setup foreground notification
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
+        
         // hide keyboard if we tap outside of a field
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         tap.cancelsTouchesInView = false
@@ -54,7 +59,10 @@ class ToDoDetailTableViewController: UITableViewController {
         updateUserInterface()
     }
     
-    
+    @objc func appActiveNotification() {
+        print("The app just came to the foreground - COOL!")
+        updateReminderSwitch()
+    }
     
     
     func updateUserInterface() {
@@ -63,15 +71,31 @@ class ToDoDetailTableViewController: UITableViewController {
         datePicker.date = toDoItem.date
         noteView.text = toDoItem.notes
         reminderSwitch.isOn = toDoItem.reminderSet
-//        if reminderSwitch.isOn{
-//            dateLabel.textColor = .black
-//        } else {
-//            dateLabel.textColor = .gray
-//        }
+        //        if reminderSwitch.isOn{
+        //            dateLabel.textColor = .black
+        //        } else {
+        //            dateLabel.textColor = .gray
+        //        }
         dateLabel.textColor = (reminderSwitch.isOn ? .black : .gray)
         dateLabel.text = dateFormatter.string(from: toDoItem.date)
         enableDisableSaveButton(text: nameField.text!)
+    }
+    
+    func updateReminderSwitch() {
+        LocalNotificationManager.isAuthorized { (authorized) in
+            DispatchQueue.main.async {
+                if !authorized && self.reminderSwitch.isOn {
+                    self.oneButtonAlert(title: "User Has Not Allowed Notifications", message: "Change this in Settings.")
+                    self.reminderSwitch.isOn = false
+                }
+                self.view.endEditing(true)
+                self.dateLabel.textColor = (self.reminderSwitch.isOn ? .black : .gray)
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+            }
         }
+    }
+    
     
     
     // update toDoItem with value inside of nameField.text
@@ -110,10 +134,7 @@ class ToDoDetailTableViewController: UITableViewController {
     
     
     @IBAction func reminderSwitchChanged(_ sender: UISwitch) {
-        self.view.endEditing(true)
-        dateLabel.textColor = (reminderSwitch.isOn ? .black : .gray)
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        updateReminderSwitch()
     }
     
     

@@ -5,17 +5,18 @@
 //  Created by Jennifer Joseph on 10/5/20.
 //
 
-import Foundation
+import UIKit
 import UserNotifications
 
 struct LocalNotificationManager {
+    
     
     // this code gets user authorization to send them notifications
     // pass in the kinds of notifications that will be authorized
     // remember that UNUserNotificationCenter.current() go together
     // when code completion comes up, double click bool part to change it to "trailing closure" because last parameter in method is a closure, aka block of code that we operate on after we get a bool or an optionally wrapped error; therefore code has to decide what to do when given either one of these
     // granted for true or false that authorization has been given
-    static func authorizeLocalNotifications() {
+    static func authorizeLocalNotifications(viewController: UIViewController) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge,.sound]) { (granted, error) in
             
             // code for error
@@ -30,11 +31,35 @@ struct LocalNotificationManager {
             //code for bool
             if granted {
                 print("notification authorization granted" )
-                
             } else {
                 print("user denied notifications")
-                // TODO: add alert later on telling the user what to do
-                
+                DispatchQueue.main.async {
+                    viewController.oneButtonAlert(title: "User Has Not Allowed Notifications", message: "Change this in Settings.")
+                }
+            }
+        }
+    }
+    
+    static func isAuthorized(completed: @escaping (Bool) -> ()) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge,.sound]) { (granted, error) in
+            
+            // code for error
+            // want to deal w error if error is not nil
+            // guards and makes sure that the only thing that pass are if the error is nil (no error)
+            // else happens if there is a error
+            guard error == nil else {
+                print("ERROR: \(error!.localizedDescription)")
+                completed(false)
+                return
+            }
+            
+            //code for bool
+            if granted {
+                print("notification authorization granted" )
+                completed(true)
+            } else {
+                print("user denied notifications")
+                completed(false)
             }
         }
     }

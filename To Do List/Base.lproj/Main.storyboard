@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--To Do List View Controller-->
+        <!--To Do List-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ToDoListViewController" customModule="To_Do_List" customModuleProvider="target" sceneMemberID="viewController">
@@ -28,18 +28,20 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KlJ-KY-2Nz">
-                                                    <rect key="frame" x="16" y="10" width="24" height="22"/>
+                                                    <rect key="frame" x="13" y="10" width="34" height="26"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="rectangle" catalog="system"/>
+                                                    <state key="normal" image="rectangle" catalog="system">
+                                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="24"/>
+                                                    </state>
                                                     <state key="selected" image="checkmark.rectangle" catalog="system"/>
                                                     <connections>
                                                         <action selector="checkToggled:" destination="uwd-p9-yPi" eventType="touchUpInside" id="tm1-YE-Nic"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="73d-PM-GCe">
-                                                    <rect key="frame" x="48" y="10" width="311" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="this will be a To Do item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="73d-PM-GCe">
+                                                    <rect key="frame" x="55" y="4" width="311" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -63,7 +65,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="RoD-Zv-niP" secondAttribute="trailing" id="tBt-Tp-ED9"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="SxM-Ty-dKj">
+                    <navigationItem key="navigationItem" title="To Do List" largeTitleDisplayMode="always" id="SxM-Ty-dKj">
                         <barButtonItem key="leftBarButtonItem" title="Edit" id="zOE-lW-32o">
                             <connections>
                                 <action selector="editButtonPressed:" destination="BYZ-38-t0r" id="ADo-0U-iz2"/>
@@ -102,10 +104,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sKK-yc-X3a">
-                                                    <rect key="frame" x="14" y="5" width="343" height="34"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bg" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sKK-yc-X3a">
+                                                    <rect key="frame" x="16" y="0.0" width="341" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
                                                         <action selector="textFieldEditingChanged:" destination="4O4-I5-fDK" eventType="editingChanged" id="edc-5w-ccY"/>
@@ -133,9 +135,9 @@
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12/12/12, 12:12:12 PM" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fms-Ie-DIF">
-                                                    <rect key="frame" x="198" y="12" width="161" height="21"/>
+                                                    <rect key="frame" x="173" y="12" width="186" height="24"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -176,7 +178,7 @@
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                     <color key="textColor" systemColor="labelColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                             </subviews>
@@ -190,7 +192,7 @@
                             <outlet property="delegate" destination="4O4-I5-fDK" id="0Ke-XC-6Ie"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="BDN-rW-wOq">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="BDN-rW-wOq">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="QH0-4D-Hkc">
                             <connections>
                                 <action selector="cancelButtonPressed:" destination="4O4-I5-fDK" id="E97-og-evw"/>
@@ -214,15 +216,15 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jfE-7N-vGg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="OeU-JF-Moh" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3457" y="72"/>
+            <point key="canvasLocation" x="3456.8000000000002" y="71.514242878560722"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZDR-Re-Qg9">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FeX-7F-The" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="32Y-W8-P2f">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="32Y-W8-P2f">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
