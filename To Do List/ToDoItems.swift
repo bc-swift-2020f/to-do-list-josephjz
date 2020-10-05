@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UserNotifications
 
 class ToDoItems {
     var itemsArray: [ToDoItem] = []
@@ -22,6 +23,7 @@ class ToDoItems {
         } catch {
             print("😡Error: Could not save data \(error.localizedDescription)")
         }
+        setNotifications()
     }
     
     // () -> () means completion handler isnt accepting anything inside, or expecting to pass anything out
@@ -40,4 +42,25 @@ class ToDoItems {
         }
         completed()
     }
+    
+    
+    func setNotifications() {
+        // dont want to run this if there are no items in toDoItems List
+        guard itemsArray.count > 0 else {
+            return
+        }
+        //remove all notifications
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        //now we recreate the notifications with the data we just saved
+        
+        // note if we did for item in toDoItems we couldnt change item because it wpuld be a constant so instead we use index to access the data and change it
+        for index in  0..<itemsArray.count {
+            if itemsArray[index].reminderSet {
+                let toDoItem = itemsArray[index]
+                itemsArray[index].notificationID = LocalNotificationManager.setCalendarNotification(title: toDoItem.name, subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
+            }
+        }
+    }
+    
+    
 }
